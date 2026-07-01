@@ -10,6 +10,35 @@ public class GameOfLife {
         this.grid = grid;
     }
 
+    public int countNeighbours(int row, int col){
+        /* -------------------------------
+        “row = je change d’étage”
+        “col = je me déplace dans l’étage”
+
+                    haut (row - 1)
+                        ↑
+            gauche ←  (row,col)  → droite
+                        ↓
+                    bas (row + 1)
+         ------------------------------- */
+        int neighbours = 0;
+        for(int dy = -1; dy <= 1; dy ++){
+            for(int dx = -1; dx <= 1; dx ++){
+                if(!(dy == 0 && dx == 0)){
+                    int newRow = row + dy;
+                    int newCol = col + dx;
+
+                    if (newRow >= 0 && newRow < grid.length &&
+                            newCol >= 0 && newCol < grid[0].length){
+                        neighbours ++;
+                        System.out.println(grid[newRow][newCol]);
+                    }
+                }
+            }
+        }
+        return neighbours;
+    }
+
     public boolean[][] getGrid() {
         return grid;
     }

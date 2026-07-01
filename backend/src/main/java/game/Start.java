@@ -7,5 +7,6 @@ public class Start {
         GameOfLife game = new GameOfLife(grid);
         game.getGrid()[0][0] = true;
         System.out.println(game);
+        game.countNeighbours(0, 1);
     }
 }
