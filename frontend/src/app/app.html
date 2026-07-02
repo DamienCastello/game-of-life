@@ -1,8 +1,14 @@
-<nav>
-  <a routerLink="/">Home</a>
-  <a routerLink="/game">Game</a>
-</nav>
+<div class="app">
+  <header class="app-header">
+    <div class="logo">🧬 Game of Life</div>
 
-<hr />
+    <nav class="nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+      <a routerLink="/game" routerLinkActive="active">Game</a>
+    </nav>
+  </header>
 
-<router-outlet></router-outlet>
+  <main class="app-container">
+    <router-outlet></router-outlet>
+  </main>
+</div>

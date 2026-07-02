@@ -57,6 +57,14 @@ export class GameComponent {
     });
   }
 
+  trackByRow(index: number, row: boolean[]) {
+    return index;
+  }
+
+  trackByCell(index: number, cell: boolean) {
+    return index;
+  }
+
   toggleCell(i: number, j: number) {
     if (!this.isDrawingMode || this.running) return;
 
