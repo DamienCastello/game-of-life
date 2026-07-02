@@ -1,0 +1,21 @@
+.grid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  flex: 1;
+  aspect-ratio: 1;
+  border: 1px solid #ddd;
+}
+
+.cell.alive {
+  background: black;
+}

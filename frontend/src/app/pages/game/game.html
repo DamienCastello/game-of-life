@@ -1,0 +1,19 @@
+<h2>Game of Life</h2>
+
+<select [(ngModel)]="selectedPattern">
+  <option value="blinker">Blinker</option>
+  <option value="glider">Glider</option>
+  <option value="block">Block</option>
+</select>
+
+<button (click)="start()">Start</button>
+<button (click)="stop()">Stop</button>
+
+<div class="grid">
+  <div *ngFor="let row of grid" class="row">
+    <div *ngFor="let cell of row"
+         class="cell"
+         [class.alive]="cell">
+    </div>
+  </div>
+</div>

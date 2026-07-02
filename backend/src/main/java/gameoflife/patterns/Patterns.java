@@ -1,4 +1,4 @@
-package patterns;
+package gameoflife.patterns;
 
 public class Patterns {
     public static void createBlinker(boolean[][] grid) {
