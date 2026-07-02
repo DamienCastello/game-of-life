@@ -1,19 +1,45 @@
 <h2>Game of Life</h2>
 
-<select [(ngModel)]="selectedPattern">
-  <option value="blinker">Blinker</option>
-  <option value="glider">Glider</option>
-  <option value="block">Block</option>
-</select>
+<div class="toolbar">
 
-<button (click)="start()">Start</button>
-<button (click)="stop()">Stop</button>
+  <!-- 🧩 CUSTOM -->
+  <button (click)="selectPattern('custom')" [class.active]="currentPattern === 'custom'" [disabled]="running">
+    ✏️ Custom
+  </button>
+
+  <!-- 👾 BLINKER -->
+  <button (click)="selectPattern('blinker')" [class.active]="currentPattern === 'blinker'"
+    [disabled]="running">
+  🔁 Blinker
+  </button>
+
+  <!-- 🚀 GLIDER -->
+  <button (click)="selectPattern('glider')" [class.active]="currentPattern === 'glider'" [disabled]="running">
+  🚀 Glider
+  </button>
+
+  <!-- 🟦 BLOCK -->
+  <button (click)="selectPattern('block')" [class.active]="currentPattern === 'block'" [disabled]="running">
+  🟦 Block
+  </button>
+
+</div>
+
+<div class="controls">
+
+  <button *ngIf="!running" (click)="start()">
+    ▶ Start
+  </button>
+
+  <button *ngIf="running" (click)="stop()">
+    ⏹ Stop
+  </button>
+
+</div>
 
 <div class="grid">
-  <div *ngFor="let row of grid" class="row">
-    <div *ngFor="let cell of row"
-         class="cell"
-         [class.alive]="cell">
+  <div *ngFor="let row of grid; let i = index" class="row">
+    <div *ngFor="let cell of row; let j = index" class="cell" [class.alive]="cell" (click)="toggleCell(i, j)">
     </div>
   </div>
 </div>

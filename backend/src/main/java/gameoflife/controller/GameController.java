@@ -19,9 +19,15 @@ public class GameController {
         this.service = service;
     }
 
+    @PostMapping("/preview")
+    public boolean[][] preview(@RequestBody StartRequest request) {
+        boolean[][] grid = new boolean[20][20];
+        return service.applyPattern(grid, request.pattern);
+    }
+
     @PostMapping("/start")
     public boolean[][] start(@RequestBody StartRequest request) {
-        return service.start(request.pattern);
+        return service.start(request.pattern, request.grid);
     }
 
     @GetMapping("/next")

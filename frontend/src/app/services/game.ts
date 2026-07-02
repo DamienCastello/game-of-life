@@ -10,9 +10,16 @@ export class GameService {
 
   constructor(private http: HttpClient) { }
 
-  start(pattern: string) {
-    return this.http.post<boolean[][]>(`${this.api}/start`, {
+  preview(pattern: string) {
+    return this.http.post<boolean[][]>(`${this.api}/preview`, {
       pattern: pattern
+    });
+  }
+
+  start(pattern: string, grid: boolean[][]) {
+    return this.http.post<boolean[][]>(`${this.api}/start`, {
+      pattern,
+      grid
     });
   }
 

@@ -19,3 +19,13 @@
 .cell.alive {
   background: black;
 }
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+button.active {
+  border: 2px solid #000;
+  transform: scale(1.05);
+}
