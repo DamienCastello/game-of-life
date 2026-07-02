@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class GameService {
 
-  private api = 'http://localhost:8080/api/game';
+  private api = '/api/game';
 
   constructor(private http: HttpClient) { }
 

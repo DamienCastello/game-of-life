@@ -6,7 +6,11 @@ import gameoflife.service.GameService;
 
 @RestController
 @RequestMapping("/api/game")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {
+        "http://localhost:4200",
+        "http://localhost:8080",
+        "https://game-of-life.castello.ovh"
+})
 public class GameController {
 
     private final GameService service;
