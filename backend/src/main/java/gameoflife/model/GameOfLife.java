@@ -10,40 +10,67 @@ public class GameOfLife {
         this.grid = grid;
     }
 
-    public int countNeighbours(int row, int col){
-        /* -------------------------------
-        “row = je change d’étage”
-        “col = je me déplace dans l’étage”
+public int countNeighbours(int row, int col){
+    /* -------------------------------
+    “row = je change d’étage”
+    “col = je me déplace dans l’étage”
 
-                    haut (row - 1)
-                        ↑
-            gauche ←  (row,col)  → droite
-                        ↓
-                    bas (row + 1)
-         ------------------------------- */
-        int neighbours = 0;
-        for(int dy = -1; dy <= 1; dy ++){
-            for(int dx = -1; dx <= 1; dx ++){
-                if(!(dy == 0 && dx == 0)){
-                    int newRow = row + dy;
-                    int newCol = col + dx;
+                haut (row - 1)
+                    ↑
+        gauche ←  (row,col)  → droite
+                    ↓
+                bas (row + 1)
+     ------------------------------- */
 
-                    if (newRow >= 0 && newRow < grid.length &&
-                            newCol >= 0 && newCol < grid[0].length){
-                        // Cellule voisine vivante
-                        if(grid[newRow][newCol]){
-                            neighbours ++;
-                        }
-                        //System.out.println(grid[newRow][newCol]);
-                    }
+    int neighbours = 0;
+    int height = grid.length;
+    int width = grid[0].length;
+
+    for(int dy = -1; dy <= 1; dy ++){
+        for(int dx = -1; dx <= 1; dx ++){
+
+            // On ignore la cellule elle-même
+            if(!(dy == 0 && dx == 0)){
+                /* -----------------------------------------
+                Au lieu de bloquer les bords de la grille,
+                on fait "boucler" les coordonnées :
+
+                - si on sort à gauche → on revient à droite
+                - si on sort en haut → on revient en bas
+                - et inversement
+
+                Cela transforme la grille en "tore"
+                (comme une planète sans bord)
+                ----------------------------------------- */
+
+                int newRow = (row + dy + height) % height;
+                int newCol = (col + dx + width) % width;
+
+                // Si la cellule voisine est vivante
+                if(grid[newRow][newCol]){
+                    neighbours ++;
                 }
             }
         }
-        return neighbours;
     }
 
+    return neighbours;
+}
+
     public void nextGeneration(){
-        boolean[][] newGrid = new boolean[20][20];
+        // Nouvelle grille de même taille que l'actuelle
+        boolean[][] newGrid = new boolean[grid.length][grid[0].length];
+
+        /* -----------------------------------------
+        On crée une nouvelle génération basée sur la grille actuelle.
+
+        IMPORTANT :
+        On ne modifie jamais la grille en cours pendant le calcul,
+        sinon les calculs de voisins seraient faussés.
+
+        On travaille donc sur une copie "newGrid",
+        puis on remplace la grille à la fin.
+        ----------------------------------------- */
 
         for(int row = 0; row < grid.length; row ++){
             for(int col = 0; col < grid[0].length; col ++){
