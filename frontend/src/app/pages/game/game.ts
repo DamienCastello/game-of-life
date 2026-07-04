@@ -92,10 +92,14 @@ export class GameComponent {
     this.resetToCustom();
   }
 
-  // Taille de cellule adaptée à la grille pour que le plateau reste lisible
-  get cellSize(): number {
+  // Taille de cellule (px), adaptée à la grille pour rester lisible.
+  // Champ recalculé seulement quand la grille change de taille, pour ne
+  // pas refaire le calcul à chaque cellule et à chaque génération.
+  cellSize = 22;
+
+  private updateCellSize() {
     const n = Math.max(this.rows, this.cols);
-    return Math.max(6, Math.min(22, Math.floor(560 / n)));
+    this.cellSize = Math.max(6, Math.min(22, Math.floor(560 / n)));
   }
 
   // Délai entre deux générations (ms), déduit de la vitesse choisie
@@ -125,6 +129,7 @@ export class GameComponent {
     this.rows = 20;
     this.cols = 20;
     this.grid = this.buildEmptyGrid(this.rows, this.cols);
+    this.updateCellSize();
   }
 
   selectPattern(pattern: string) {
@@ -147,6 +152,7 @@ export class GameComponent {
       this.rows = state.grid.length;
       this.cols = state.grid[0]?.length ?? 0;
       this.torus = state.torus;
+      this.updateCellSize();
     });
   }
 
@@ -188,6 +194,7 @@ export class GameComponent {
     this.grid = resized;
     this.rows = newRows;
     this.cols = newCols;
+    this.updateCellSize();
   }
 
   clearGrid() {
