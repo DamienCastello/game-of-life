@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+// État d'une partie renvoyé par le backend quand on charge un pattern.
+// - grid  : la grille de cellules (true = vivante), déjà à la bonne taille
+// - torus : mode de bord recommandé (true = les bords bouclent)
 export interface GameState {
   grid: boolean[][];
   torus: boolean;

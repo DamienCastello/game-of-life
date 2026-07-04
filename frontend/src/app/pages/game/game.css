@@ -278,6 +278,88 @@
    RESPONSIVE
    ===================================================================== */
 
+/* Le menu déroulant "maison" n'existe que sur mobile : caché par défaut,
+   il remplace les boutons sous 640px et en paysage (voir media queries). */
+.pattern-menu {
+  display: none;
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+}
+
+.pattern-menu-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.pattern-menu-trigger .caret {
+  opacity: 0.6;
+}
+
+/* Le panneau ouvert : on le borne à la hauteur de l'écran et on le rend
+   scrollable, pour qu'il ne déborde jamais (notamment en paysage). */
+.pattern-menu-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  max-height: 70vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #0f172a;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+.pattern-menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pattern-menu-group-title {
+  padding: 6px 10px 2px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.45;
+}
+
+.pattern-menu-item {
+  text-align: left;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pattern-menu-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pattern-menu-item.active {
+  background: rgba(0, 255, 200, 0.15);
+  color: #00ffd0;
+}
+
 /* --- Téléphones (largeur réduite) --- */
 @media (max-width: 640px) {
   .topbar {
@@ -285,28 +367,16 @@
     gap: 8px;
   }
 
-  /* La barre de patterns devient une bande qu'on fait défiler du doigt,
-     au lieu de passer à la ligne et de manger toute la hauteur. */
+  /* Sur mobile on remplace les boutons (trop larges) par le menu déroulant :
+     aucune ambiguïté, l'utilisateur sait qu'un select s'ouvre. */
   .patterns {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    justify-content: flex-start;
-    width: 100%;
-    padding-bottom: 6px;
-    -webkit-overflow-scrolling: touch;
+    display: none;
   }
 
-  /* Le bouton Custom et chaque catégorie gardent leur taille (pas d'écrasement). */
-  .patterns > button,
-  .group {
-    flex: 0 0 auto;
+  .pattern-menu {
+    display: block;
   }
 
-  .group-buttons {
-    flex-wrap: nowrap;
-  }
-
-  .patterns button,
   .toggle {
     font-size: 11px;
     padding: 5px 9px;
@@ -325,15 +395,21 @@
 }
 
 /* --- Téléphones en paysage (hauteur réduite) : on récupère de la place
-       verticale pour la grille en compressant le chrome. --- */
+       verticale pour la grille. On utilise aussi le menu déroulant, car
+       en paysage la largeur dépasse souvent 640px (donc la 1re media query
+       ne s'applique pas) alors que la hauteur, elle, est précieuse. --- */
 @media (orientation: landscape) and (max-height: 500px) {
   .topbar {
     padding: 4px 8px;
     gap: 4px;
   }
 
-  .group-title {
+  .patterns {
     display: none;
+  }
+
+  .pattern-menu {
+    display: block;
   }
 
   .footer {

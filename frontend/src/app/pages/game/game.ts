@@ -24,6 +24,12 @@ export class GameComponent implements AfterViewInit {
   // Référence au plateau, pour mesurer l'espace réellement disponible
   @ViewChild('board') boardRef?: ElementRef<HTMLElement>;
 
+  // Référence au menu déroulant mobile, pour le fermer si on clique dehors
+  @ViewChild('patternMenu') patternMenuRef?: ElementRef<HTMLElement>;
+
+  // Ouverture du menu déroulant des patterns (mobile)
+  menuOpen = false;
+
   // Catalogue affiché, groupé par catégorie
   groups: PatternGroup[] = [
     {
@@ -65,6 +71,9 @@ export class GameComponent implements AfterViewInit {
     },
   ];
 
+  // État central du jeu, détenu côté client : la grille de cellules et ses
+  // dimensions. Le backend est sans état → on lui renvoie cette grille à
+  // chaque génération (voir run() / GameService.next).
   grid: boolean[][] = [];
 
   rows = 20;
@@ -186,6 +195,39 @@ export class GameComponent implements AfterViewInit {
       this.torus = state.torus;
       this.updateCellSize();
     });
+  }
+
+  // ----- Menu déroulant des patterns (mobile) -----
+
+  // Libellé du pattern courant, affiché sur le bouton du menu.
+  get currentPatternLabel(): string {
+    if (this.currentPattern === 'custom') return '✏️ Custom';
+    for (const group of this.groups) {
+      const p = group.patterns.find(x => x.id === this.currentPattern);
+      if (p) return p.label;
+    }
+    return '✏️ Custom';
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  // Choix d'un pattern depuis le menu : on ferme puis on sélectionne.
+  pickPattern(pattern: string) {
+    this.menuOpen = false;
+    this.selectPattern(pattern);
+  }
+
+  // Ferme le menu si on clique en dehors (le clic sur le bouton, lui, est
+  // à l'intérieur du menu, donc il ne le referme pas immédiatement).
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.menuOpen) return;
+    const menu = this.patternMenuRef?.nativeElement;
+    if (menu && !menu.contains(event.target as Node)) {
+      this.menuOpen = false;
+    }
   }
 
   trackByRow(index: number) {

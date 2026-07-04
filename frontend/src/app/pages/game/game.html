@@ -1,6 +1,10 @@
 <div class="page">
   <header class="topbar">
-    <!-- 🧩 PATTERNS (groupés par catégorie) -->
+    <!-- 🧩 PATTERNS — deux affichages selon la taille d'écran :
+         - desktop : les boutons groupés par catégorie (.patterns)
+         - mobile  : un menu déroulant maison (.pattern-menu), plus clair
+                     qu'un scroll horizontal qu'on pourrait croire "coupé".
+         Le CSS n'en montre qu'un seul à la fois (media query). -->
     <div class="patterns">
       <button (click)="selectPattern('custom')" [class.active]="currentPattern === 'custom'">
         ✏️ Custom
@@ -11,6 +15,31 @@
         <div class="group-buttons">
           <button *ngFor="let p of group.patterns" (click)="selectPattern(p.id)"
             [class.active]="currentPattern === p.id">
+            {{ p.label }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu déroulant "maison" (affiché uniquement sur mobile).
+         Contrairement à un <select> natif, on maîtrise la hauteur et le
+         scroll du panneau ouvert → il ne dépasse jamais de l'écran. -->
+    <div class="pattern-menu" #patternMenu>
+      <button class="pattern-menu-trigger" (click)="toggleMenu()">
+        <span>{{ currentPatternLabel }}</span>
+        <span class="caret">▾</span>
+      </button>
+
+      <div class="pattern-menu-panel" *ngIf="menuOpen">
+        <button class="pattern-menu-item" (click)="pickPattern('custom')"
+          [class.active]="currentPattern === 'custom'">
+          ✏️ Custom
+        </button>
+
+        <div class="pattern-menu-group" *ngFor="let group of groups">
+          <span class="pattern-menu-group-title">{{ group.title }}</span>
+          <button *ngFor="let p of group.patterns" class="pattern-menu-item"
+            (click)="pickPattern(p.id)" [class.active]="currentPattern === p.id">
             {{ p.label }}
           </button>
         </div>
