@@ -9,37 +9,46 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  background: #151923;
-  border-bottom: 1px solid #222;
+  /* Léger dégradé sombre + liséré teal pour rester dans le thème du jeu */
+  background: linear-gradient(180deg, #0f172a, #0b1220);
+  border-bottom: 1px solid rgba(0, 255, 208, 0.15);
   flex-shrink: 0;
 }
 
 .logo {
   font-weight: 700;
   letter-spacing: 1px;
+  /* Même dégradé blanc -> teal que le titre de la home */
+  background: linear-gradient(120deg, #ffffff, #00ffd0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .nav {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .nav a {
   text-decoration: none;
-  color: #aaa;
-  padding: 6px 10px;
-  border-radius: 6px;
-  transition: 0.2s;
+  color: #a1a1aa;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: 0.2s ease;
 }
 
 .nav a:hover {
-  background: #222;
   color: #fff;
+  border-color: rgba(0, 255, 208, 0.4);
 }
 
 .nav a.active {
-  background: #3b82f6;
-  color: white;
+  background: rgba(0, 255, 208, 0.12);
+  border-color: #00ffd0;
+  color: #7dffe9;
+  box-shadow: 0 0 12px rgba(0, 255, 208, 0.25);
 }
 
 .app-container {
