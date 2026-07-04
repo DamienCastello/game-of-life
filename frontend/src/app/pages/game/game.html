@@ -55,6 +55,12 @@
 
   <!-- ▶ CONTROLS (BOTTOM CENTER) -->
   <footer class="footer">
+    <label class="speed">
+      ⏱️ Vitesse : {{ speed }} gén/s
+      <input type="range" [min]="minSpeed" [max]="maxSpeed" step="1" [value]="speed"
+        (input)="setSpeed(+$any($event.target).value)" />
+    </label>
+
     <button *ngIf="!running" (click)="start()">▶ Start</button>
     <button *ngIf="running" (click)="stop()">⏹ Stop</button>
   </footer>

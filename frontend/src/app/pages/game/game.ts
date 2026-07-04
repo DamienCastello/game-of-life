@@ -78,6 +78,11 @@ export class GameComponent {
 
   torus = true;
 
+  // Vitesse de la simulation, en générations par seconde
+  speed = 3;
+  minSpeed = 1;
+  maxSpeed = 20;
+
   interval: any;
   running = false;
 
@@ -91,6 +96,21 @@ export class GameComponent {
   get cellSize(): number {
     const n = Math.max(this.rows, this.cols);
     return Math.max(6, Math.min(22, Math.floor(560 / n)));
+  }
+
+  // Délai entre deux générations (ms), déduit de la vitesse choisie
+  get intervalMs(): number {
+    return Math.round(1000 / this.speed);
+  }
+
+  // La vitesse est réglable à tout moment ; si la simulation tourne, on
+  // relance l'intervalle pour appliquer la nouvelle cadence immédiatement.
+  setSpeed(value: number) {
+    this.speed = Math.max(this.minSpeed, Math.min(this.maxSpeed, Math.round(value) || this.minSpeed));
+    if (this.running) {
+      clearInterval(this.interval);
+      this.run();
+    }
   }
 
   private buildEmptyGrid(rows: number, cols: number): boolean[][] {
@@ -188,7 +208,7 @@ export class GameComponent {
       this.gameService.next(this.grid, this.torus).subscribe(res => {
         this.grid = res;
       });
-    }, 300);
+    }, this.intervalMs);
   }
 
   stop() {

@@ -162,10 +162,26 @@
 .footer {
   flex: 0 0 auto;
   display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 20px;
   padding: 14px;
   background: rgba(255, 255, 255, 0.02);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer .speed {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  opacity: 0.8;
+  font-variant-numeric: tabular-nums;
+}
+
+.footer .speed input[type="range"] {
+  accent-color: #00ffd0;
+  cursor: pointer;
 }
 
 .footer button {
