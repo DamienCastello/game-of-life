@@ -2,6 +2,16 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameService } from '../../services/game';
 
+interface PatternButton {
+  id: string;
+  label: string;
+}
+
+interface PatternGroup {
+  title: string;
+  patterns: PatternButton[];
+}
+
 @Component({
   selector: 'app-game',
   standalone: true,
@@ -11,15 +21,62 @@ import { GameService } from '../../services/game';
 })
 export class GameComponent {
 
+  // Catalogue affiché, groupé par catégorie
+  groups: PatternGroup[] = [
+    {
+      title: 'Basiques',
+      patterns: [
+        { id: 'blinker', label: '🔁 Blinker' },
+        { id: 'glider', label: '🚀 Glider' },
+        { id: 'block', label: '🟦 Block' },
+      ],
+    },
+    {
+      title: 'Oscillateurs',
+      patterns: [
+        { id: 'pulsar', label: '💠 Pulsar' },
+        { id: 'pentadecathlon', label: '🫀 Pentadécathlon' },
+      ],
+    },
+    {
+      title: 'Vaisseaux',
+      patterns: [
+        { id: 'lwss', label: '🛸 LWSS' },
+        { id: 'mwss', label: '🛰️ MWSS' },
+        { id: 'hwss', label: '🚁 HWSS' },
+      ],
+    },
+    {
+      title: 'Usines',
+      patterns: [
+        { id: 'gosper', label: '🏭 Gosper Gun' },
+      ],
+    },
+    {
+      title: 'Méthuselahs',
+      patterns: [
+        { id: 'rpentomino', label: '🌋 R-pentomino' },
+        { id: 'acorn', label: '🌰 Acorn' },
+        { id: 'diehard', label: '💀 Diehard' },
+      ],
+    },
+  ];
+
   grid: boolean[][] = [];
 
   rows = 20;
   cols = 20;
 
-  currentPattern: string = 'custom';
+  // Bornes de la barre de dimensions (mode custom)
+  minSize = 5;
+  maxSize = 80;
+
+  currentPattern = 'custom';
 
   isCustomMode = true;
   isDrawingMode = true;
+
+  showDimensions = false;
 
   interval: any;
   running = false;
@@ -27,70 +84,112 @@ export class GameComponent {
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
-    this.initEmptyGrid();
+    this.resetToCustom();
   }
 
-  initEmptyGrid() {
-    this.grid = Array.from({ length: this.rows }, () =>
-      Array(this.cols).fill(false)
-    );
+  // Taille de cellule adaptée à la grille pour que le plateau reste lisible
+  get cellSize(): number {
+    const n = Math.max(this.rows, this.cols);
+    return Math.max(6, Math.min(22, Math.floor(560 / n)));
+  }
+
+  private buildEmptyGrid(rows: number, cols: number): boolean[][] {
+    return Array.from({ length: rows }, () => Array(cols).fill(false));
+  }
+
+  private resetToCustom() {
+    this.currentPattern = 'custom';
+    this.isCustomMode = true;
+    this.isDrawingMode = true;
+    this.rows = 20;
+    this.cols = 20;
+    this.grid = this.buildEmptyGrid(this.rows, this.cols);
   }
 
   selectPattern(pattern: string) {
-
     if (this.running) return;
 
     this.currentPattern = pattern;
-    this.isCustomMode = (pattern === 'custom');
 
-    if (this.isCustomMode) {
-      this.initEmptyGrid();
-      this.isDrawingMode = true;
+    if (pattern === 'custom') {
+      this.showDimensions = false;
+      this.resetToCustom();
       return;
     }
 
+    // Pattern prédéfini : le backend renvoie la grille déjà dimensionnée
+    this.isCustomMode = false;
     this.isDrawingMode = false;
+    this.showDimensions = false;
 
     this.gameService.preview(pattern).subscribe(grid => {
-      console.log(grid);
       this.grid = grid;
+      this.rows = grid.length;
+      this.cols = grid[0]?.length ?? 0;
     });
   }
 
-  trackByRow(index: number, row: boolean[]) {
+  trackByRow(index: number) {
     return index;
   }
 
-  trackByCell(index: number, cell: boolean) {
+  trackByCell(index: number) {
     return index;
   }
 
   toggleCell(i: number, j: number) {
     if (!this.isDrawingMode || this.running) return;
-
     this.grid[i][j] = !this.grid[i][j];
   }
 
+  // Barre de dimensions : disponible en mode custom
+  toggleDimensions() {
+    if (!this.isCustomMode) return;
+    this.showDimensions = !this.showDimensions;
+  }
+
+  setRows(value: number) {
+    this.resize(this.clampSize(value), this.cols);
+  }
+
+  setCols(value: number) {
+    this.resize(this.rows, this.clampSize(value));
+  }
+
+  private clampSize(value: number): number {
+    return Math.max(this.minSize, Math.min(this.maxSize, Math.round(value) || this.minSize));
+  }
+
+  // Redimensionne la grille en conservant le dessin existant (recadré)
+  private resize(newRows: number, newCols: number) {
+    const resized = Array.from({ length: newRows }, (_, i) =>
+      Array.from({ length: newCols }, (_, j) => this.grid[i]?.[j] ?? false)
+    );
+    this.grid = resized;
+    this.rows = newRows;
+    this.cols = newCols;
+  }
+
+  clearGrid() {
+    if (this.running) return;
+    this.grid = this.buildEmptyGrid(this.rows, this.cols);
+  }
+
   start() {
+    if (this.running) return;
     this.running = true;
     this.isDrawingMode = false;
-    this.isCustomMode = false;
-
-    this.gameService.start(this.currentPattern, this.grid).subscribe(res => {
-      this.grid = res;
-      this.run();
-    });
+    this.showDimensions = false;
+    this.run();
   }
 
   run() {
     this.interval = setInterval(() => {
-
       if (!this.running) return;
 
       this.gameService.next(this.grid).subscribe(res => {
         this.grid = res;
       });
-
     }, 300);
   }
 
@@ -98,7 +197,7 @@ export class GameComponent {
     this.running = false;
     clearInterval(this.interval);
 
-    this.isCustomMode = (this.currentPattern === 'custom');
+    // On repasse en dessin uniquement pour une grille custom
     this.isDrawingMode = this.isCustomMode;
   }
 }

@@ -1,8 +1,9 @@
 package gameoflife.controller;
 
-import gameoflife.dto.StartRequest;
-import org.springframework.web.bind.annotation.*;
+import gameoflife.dto.NextRequest;
+import gameoflife.dto.PreviewRequest;
 import gameoflife.service.GameService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/game")
@@ -19,19 +20,15 @@ public class GameController {
         this.service = service;
     }
 
+    // Charge un pattern prédéfini : renvoie la grille dimensionnée
     @PostMapping("/preview")
-    public boolean[][] preview(@RequestBody StartRequest request) {
-        boolean[][] grid = new boolean[20][20];
-        return service.applyPattern(grid, request.pattern);
+    public boolean[][] preview(@RequestBody PreviewRequest request) {
+        return service.preview(request.pattern);
     }
 
-    @PostMapping("/start")
-    public boolean[][] start(@RequestBody StartRequest request) {
-        return service.start(request.pattern, request.grid);
-    }
-
+    // Calcule la génération suivante à partir de la grille reçue
     @PostMapping("/next")
-    public boolean[][] next(@RequestBody boolean[][] grid) {
-        return service.next(grid);
+    public boolean[][] next(@RequestBody NextRequest request) {
+        return service.next(request.grid);
     }
 }

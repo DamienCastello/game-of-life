@@ -1,39 +1,62 @@
 <div class="page">
-    <header class="topbar">
-      <!-- 🧩 PATTERNS (TOP CENTER) -->
-      <div class="patterns">
-        <button (click)="selectPattern('custom')" [class.active]="currentPattern === 'custom'" [disabled]="running">
-          ✏️ Custom
-        </button>
+  <header class="topbar">
+    <!-- 🧩 PATTERNS (groupés par catégorie) -->
+    <div class="patterns">
+      <button (click)="selectPattern('custom')" [class.active]="currentPattern === 'custom'" [disabled]="running">
+        ✏️ Custom
+      </button>
 
-        <button (click)="selectPattern('blinker')" [class.active]="currentPattern === 'blinker'" [disabled]="running">
-          🔁 Blinker
-        </button>
-
-        <button (click)="selectPattern('glider')" [class.active]="currentPattern === 'glider'" [disabled]="running">
-          🚀 Glider
-        </button>
-
-        <button (click)="selectPattern('block')" [class.active]="currentPattern === 'block'" [disabled]="running">
-          🟦 Block
-        </button>
-      </div>
-    </header>
-
-    <!-- 🎮 BOARD (CENTER) -->
-    <main class="board">
-      <div class="grid">
-        <div *ngFor="let row of grid; let i = index; trackBy: trackByRow" class="row">
-          <div *ngFor="let cell of row; let j = index; trackBy: trackByCell" class="cell" [class.alive]="cell"
-            (click)="toggleCell(i, j)">
-          </div>
+      <div class="group" *ngFor="let group of groups">
+        <span class="group-title">{{ group.title }}</span>
+        <div class="group-buttons">
+          <button *ngFor="let p of group.patterns" (click)="selectPattern(p.id)"
+            [class.active]="currentPattern === p.id" [disabled]="running">
+            {{ p.label }}
+          </button>
         </div>
       </div>
-    </main>
+    </div>
 
-    <!-- ▶ CONTROLS (BOTTOM CENTER) -->
-    <footer class="footer">
-      <button *ngIf="!running" (click)="start()">▶ Start</button>
-      <button *ngIf="running" (click)="stop()">⏹ Stop</button>
-    </footer>
+    <!-- ⚙️ OPTIONS (dimensions) -->
+    <div class="options">
+      <button class="toggle" *ngIf="isCustomMode" [class.on]="showDimensions" (click)="toggleDimensions()"
+        [disabled]="running">
+        📐 Dimensions
+      </button>
+
+      <span class="dims-label">{{ rows }} × {{ cols }}</span>
+    </div>
+
+    <!-- 📐 BARRE DE DIMENSIONS (mode custom) -->
+    <div class="dimensions" *ngIf="showDimensions && isCustomMode">
+      <label>
+        Lignes : {{ rows }}
+        <input type="range" [min]="minSize" [max]="maxSize" [value]="rows"
+          (input)="setRows(+$any($event.target).value)" [disabled]="running" />
+      </label>
+      <label>
+        Colonnes : {{ cols }}
+        <input type="range" [min]="minSize" [max]="maxSize" [value]="cols"
+          (input)="setCols(+$any($event.target).value)" [disabled]="running" />
+      </label>
+      <button class="clear" (click)="clearGrid()" [disabled]="running">🧹 Effacer</button>
+    </div>
+  </header>
+
+  <!-- 🎮 BOARD (CENTER) -->
+  <main class="board">
+    <div class="grid">
+      <div *ngFor="let row of grid; let i = index; trackBy: trackByRow" class="row">
+        <div *ngFor="let cell of row; let j = index; trackBy: trackByCell" class="cell" [class.alive]="cell"
+          [style.width.px]="cellSize" [style.height.px]="cellSize" (click)="toggleCell(i, j)">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ▶ CONTROLS (BOTTOM CENTER) -->
+  <footer class="footer">
+    <button *ngIf="!running" (click)="start()">▶ Start</button>
+    <button *ngIf="running" (click)="stop()">⏹ Stop</button>
+  </footer>
 </div>
