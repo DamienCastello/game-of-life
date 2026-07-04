@@ -17,22 +17,17 @@
       </div>
     </div>
 
-    <!-- ⚙️ OPTIONS (tore + dimensions) -->
+    <!-- ⚙️ OPTIONS (tore) -->
     <div class="options">
       <button class="toggle" [class.on]="torus" (click)="toggleTorus()">
         🌐 Tore : {{ torus ? 'ON' : 'OFF' }}
-      </button>
-
-      <button class="toggle" *ngIf="isCustomMode" [class.on]="showDimensions" (click)="toggleDimensions()"
-        [disabled]="running">
-        📐 Dimensions
       </button>
 
       <span class="dims-label">{{ rows }} × {{ cols }}</span>
     </div>
 
     <!-- 📐 BARRE DE DIMENSIONS (mode custom) -->
-    <div class="dimensions" *ngIf="showDimensions && isCustomMode">
+    <div class="dimensions" *ngIf="isCustomMode">
       <label>
         Lignes : {{ rows }}
         <input type="range" [min]="minSize" [max]="maxSize" [value]="rows"

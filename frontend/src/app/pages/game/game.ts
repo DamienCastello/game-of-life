@@ -77,7 +77,6 @@ export class GameComponent {
   isDrawingMode = true;
 
   torus = true;
-  showDimensions = false;
 
   interval: any;
   running = false;
@@ -114,7 +113,6 @@ export class GameComponent {
     this.currentPattern = pattern;
 
     if (pattern === 'custom') {
-      this.showDimensions = false;
       this.resetToCustom();
       return;
     }
@@ -122,7 +120,6 @@ export class GameComponent {
     // Pattern prédéfini : le backend renvoie la grille dimensionnée + le tore adapté
     this.isCustomMode = false;
     this.isDrawingMode = false;
-    this.showDimensions = false;
 
     this.gameService.preview(pattern).subscribe(state => {
       this.grid = state.grid;
@@ -148,12 +145,6 @@ export class GameComponent {
   // Le mode tore peut être basculé à tout moment, même pendant la simulation
   toggleTorus() {
     this.torus = !this.torus;
-  }
-
-  // Barre de dimensions : disponible en mode custom
-  toggleDimensions() {
-    if (!this.isCustomMode) return;
-    this.showDimensions = !this.showDimensions;
   }
 
   setRows(value: number) {
@@ -187,7 +178,6 @@ export class GameComponent {
     if (this.running) return;
     this.running = true;
     this.isDrawingMode = false;
-    this.showDimensions = false;
     this.run();
   }
 
