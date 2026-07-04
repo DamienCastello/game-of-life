@@ -1,39 +1,87 @@
 <div class="home">
 
+  <!-- ================= HERO ================= -->
   <section class="hero">
-    <h1>Conway’s Game of Life</h1>
+    <span class="badge">Automate cellulaire · John Conway, 1970</span>
+
+    <h1>Le Jeu de la Vie</h1>
+
     <p class="subtitle">
-      Une simulation de vie artificielle basée sur des règles simples… mais un comportement émergent complexe.
+      Un « jeu à zéro joueur » : tu poses une configuration de départ, puis
+      la grille évolue toute seule, génération après génération, selon
+      seulement trois règles. De cette simplicité émergent des formes qui
+      se déplacent, oscillent, et se reproduisent.
     </p>
 
-    <a routerLink="/game" class="cta">
-      ▶ Lancer la simulation
-    </a>
+    <!-- La démo ci-dessous tourne réellement, avec les mêmes règles. -->
+    <div class="demo">
+      <div class="demo-grid"
+        [style.grid-template-columns]="'repeat(' + demoCols + ', 1fr)'"
+        [style.aspect-ratio]="demoCols + ' / ' + demoRows">
+        <div class="demo-cell" *ngFor="let cell of cells; trackBy: trackByIndex"
+          [class.alive]="cell"></div>
+      </div>
+      <span class="demo-caption">↑ une simulation en direct, juste ici</span>
+    </div>
+
+    <a routerLink="/game" class="cta">▶ Lancer ma propre simulation</a>
   </section>
 
-  <section class="cards">
+  <!-- ================= LES RÈGLES ================= -->
+  <section class="rules-section">
+    <h2>Les 3 règles</h2>
+    <p class="section-lead">
+      Le sort de chaque cellule dépend de ses <strong>8 voisines</strong>.
+      À chaque génération, on applique ces règles à toutes les cases en même temps.
+    </p>
 
-    <div class="card">
-      <h3>🧬 Règles simples</h3>
-      <p>
-        Une cellule vit, meurt ou naît selon ses voisins.
-      </p>
+    <div class="rules">
+      <div class="rule" *ngFor="let rule of rules">
+        <div class="rule-visual">
+          <div class="mini">
+            <div class="mini-cell" *ngFor="let c of rule.before; let i = index"
+              [class.on]="c" [class.center]="i === 4"></div>
+          </div>
+
+          <span class="arrow">→</span>
+
+          <div class="mini">
+            <div class="mini-cell" *ngFor="let c of rule.after; let i = index"
+              [class.on]="c" [class.center]="i === 4"></div>
+          </div>
+        </div>
+
+        <h3>{{ rule.icon }} {{ rule.title }}</h3>
+        <span class="rule-count">{{ rule.neighbours }}</span>
+        <p>{{ rule.text }}</p>
+      </div>
     </div>
+  </section>
 
-    <div class="card">
-      <h3>🌱 Émergence</h3>
-      <p>
-        De simples règles créent des structures étonnamment complexes.
-      </p>
+  <!-- ================= EN BREF ================= -->
+  <section class="facts-section">
+    <h2>En bref</h2>
+    <div class="facts">
+      <div class="fact">
+        <span class="fact-emoji">🎛️</span>
+        <p><strong>Zéro joueur.</strong> Tu ne joues qu'au début : ensuite, tout se déroule tout seul.</p>
+      </div>
+      <div class="fact">
+        <span class="fact-emoji">🌱</span>
+        <p><strong>Émergence.</strong> Des règles triviales suffisent à produire une complexité surprenante.</p>
+      </div>
+      <div class="fact">
+        <span class="fact-emoji">🧠</span>
+        <p><strong>Turing-complet.</strong> On peut littéralement y construire un ordinateur.</p>
+      </div>
     </div>
+  </section>
 
-    <div class="card">
-      <h3>🚀 Patterns</h3>
-      <p>
-        Glider, Blinker, ou création libre en mode custom.
-      </p>
-    </div>
-
+  <!-- ================= CTA FINAL ================= -->
+  <section class="final-cta">
+    <h2>À toi de jouer</h2>
+    <p>Dessine ta propre configuration, ou lance un pattern célèbre comme le Gosper Gun.</p>
+    <a routerLink="/game" class="cta">▶ Ouvrir le jeu</a>
   </section>
 
 </div>

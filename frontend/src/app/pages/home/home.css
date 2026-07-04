@@ -1,73 +1,268 @@
+:host {
+  display: block;
+  height: 100%;
+  overflow-y: auto;
+}
+
 .home {
   max-width: 1000px;
   margin: auto;
-  padding: 20px;
+  padding: 20px 20px 60px;
 }
 
-/* HERO */
+/* ================= HERO ================= */
 .hero {
   text-align: center;
-  padding: 80px 20px;
+  padding: 56px 16px 40px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 255, 208, 0.35);
+  background: rgba(0, 255, 208, 0.08);
+  color: #7dffe9;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  margin-bottom: 18px;
 }
 
 .hero h1 {
-  font-size: 48px;
-  margin-bottom: 12px;
+  font-size: 52px;
+  line-height: 1.05;
+  margin: 0 0 16px;
   color: #ffffff;
+  background: linear-gradient(120deg, #ffffff, #00ffd0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
   color: #a1a1aa;
   font-size: 18px;
-  max-width: 650px;
-  margin: auto;
-  line-height: 1.5;
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
-/* CTA */
+/* --- Démo en direct --- */
+.demo {
+  margin: 32px auto 28px;
+  max-width: 560px;
+}
+
+.demo-grid {
+  display: grid;
+  width: 100%;
+  gap: 1px;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.demo-cell {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 1px;
+  aspect-ratio: 1 / 1;
+}
+
+.demo-cell.alive {
+  background: #00ffd0;
+  box-shadow: 0 0 6px rgba(0, 255, 208, 0.6);
+}
+
+.demo-caption {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ================= CTA ================= */
 .cta {
   display: inline-block;
-  margin-top: 24px;
-  padding: 12px 20px;
-  background: #3b82f6;
-  color: white;
-  border-radius: 10px;
+  margin-top: 8px;
+  padding: 13px 22px;
+  background: #00ffd0;
+  color: #04121a;
+  border-radius: 12px;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   transition: 0.2s;
 }
 
 .cta:hover {
   transform: translateY(-2px);
-  background: #2563eb;
+  box-shadow: 0 8px 24px rgba(0, 255, 208, 0.3);
 }
 
-/* CARDS */
-.cards {
+/* ================= SECTIONS communes ================= */
+.rules-section,
+.facts-section,
+.final-cta {
+  margin-top: 64px;
+  text-align: center;
+}
+
+.rules-section h2,
+.facts-section h2,
+.final-cta h2 {
+  font-size: 30px;
+  color: #fff;
+  margin: 0 0 10px;
+}
+
+.section-lead {
+  color: #a1a1aa;
+  max-width: 620px;
+  margin: 0 auto 32px;
+  line-height: 1.6;
+}
+
+/* ================= RÈGLES ================= */
+.rules {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin-top: 60px;
 }
 
-.card {
+.rule {
   background: #151923;
   border: 1px solid #222;
-  padding: 18px;
-  border-radius: 12px;
+  border-radius: 14px;
+  padding: 22px 18px;
   transition: 0.2s;
 }
 
-.card:hover {
+.rule:hover {
   transform: translateY(-3px);
-  border-color: #333;
+  border-color: rgba(0, 255, 208, 0.4);
 }
 
-.card h3 {
-  margin-top: 0;
+.rule-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+/* Petit schéma 3x3 */
+.mini {
+  display: grid;
+  grid-template-columns: repeat(3, 16px);
+  grid-template-rows: repeat(3, 16px);
+  gap: 2px;
+}
+
+.mini-cell {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mini-cell.center {
+  outline: 1px solid rgba(255, 255, 255, 0.3);
+  outline-offset: 1px;
+}
+
+.mini-cell.on {
+  background: #00ffd0;
+  box-shadow: 0 0 6px rgba(0, 255, 208, 0.5);
+}
+
+.arrow {
+  color: #6b7280;
+  font-size: 20px;
+}
+
+.rule h3 {
+  margin: 0 0 4px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.rule-count {
+  display: inline-block;
+  font-size: 12px;
+  color: #7dffe9;
+  margin-bottom: 10px;
+}
+
+.rule p {
+  color: #a1a1aa;
+  margin: 0;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* ================= EN BREF ================= */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  text-align: left;
+}
+
+.fact {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: #151923;
+  border: 1px solid #222;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.fact-emoji {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.fact p {
+  margin: 0;
+  color: #a1a1aa;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.fact strong {
   color: #fff;
 }
 
-.card p {
+/* ================= CTA FINAL ================= */
+.final-cta p {
   color: #a1a1aa;
+  margin: 0 0 22px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 720px) {
+  .hero {
+    padding: 36px 12px 28px;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .rules,
+  .facts {
+    grid-template-columns: 1fr;
+  }
+
+  .rules-section,
+  .facts-section,
+  .final-cta {
+    margin-top: 44px;
+  }
 }
