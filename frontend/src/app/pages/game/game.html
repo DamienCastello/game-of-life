@@ -2,7 +2,7 @@
   <header class="topbar">
     <!-- 🧩 PATTERNS (groupés par catégorie) -->
     <div class="patterns">
-      <button (click)="selectPattern('custom')" [class.active]="currentPattern === 'custom'" [disabled]="running">
+      <button (click)="selectPattern('custom')" [class.active]="currentPattern === 'custom'">
         ✏️ Custom
       </button>
 
@@ -10,7 +10,7 @@
         <span class="group-title">{{ group.title }}</span>
         <div class="group-buttons">
           <button *ngFor="let p of group.patterns" (click)="selectPattern(p.id)"
-            [class.active]="currentPattern === p.id" [disabled]="running">
+            [class.active]="currentPattern === p.id">
             {{ p.label }}
           </button>
         </div>

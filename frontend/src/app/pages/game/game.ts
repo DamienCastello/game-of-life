@@ -128,7 +128,8 @@ export class GameComponent {
   }
 
   selectPattern(pattern: string) {
-    if (this.running) return;
+    // Changer de pattern en pleine simulation l'arrête automatiquement
+    if (this.running) this.stop();
 
     this.currentPattern = pattern;
 
@@ -206,6 +207,9 @@ export class GameComponent {
       if (!this.running) return;
 
       this.gameService.next(this.grid, this.torus).subscribe(res => {
+        // Une réponse arrivée après un stop/switch ne doit pas écraser
+        // la grille du nouveau pattern qu'on vient de charger.
+        if (!this.running) return;
         this.grid = res;
       });
     }, this.intervalMs);
