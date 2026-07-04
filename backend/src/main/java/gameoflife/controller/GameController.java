@@ -1,5 +1,6 @@
 package gameoflife.controller;
 
+import gameoflife.dto.GameState;
 import gameoflife.dto.NextRequest;
 import gameoflife.dto.PreviewRequest;
 import gameoflife.service.GameService;
@@ -20,15 +21,15 @@ public class GameController {
         this.service = service;
     }
 
-    // Charge un pattern prédéfini : renvoie la grille dimensionnée
+    // Charge un pattern prédéfini : renvoie la grille dimensionnée + le mode tore
     @PostMapping("/preview")
-    public boolean[][] preview(@RequestBody PreviewRequest request) {
+    public GameState preview(@RequestBody PreviewRequest request) {
         return service.preview(request.pattern);
     }
 
-    // Calcule la génération suivante à partir de la grille reçue
+    // Calcule la génération suivante à partir de la grille et du mode tore reçus
     @PostMapping("/next")
     public boolean[][] next(@RequestBody NextRequest request) {
-        return service.next(request.grid);
+        return service.next(request.grid, request.torus);
     }
 }

@@ -6,8 +6,17 @@ import java.util.Objects;
 public class GameOfLife {
     private boolean[][] grid;
 
+    // true  -> grille "tore" : les bords bouclent (planète sans bord)
+    // false -> grille bornée : hors de la grille = cellule morte
+    private final boolean torus;
+
     public GameOfLife(boolean[][] grid) {
+        this(grid, true);
+    }
+
+    public GameOfLife(boolean[][] grid, boolean torus) {
         this.grid = grid;
+        this.torus = torus;
     }
 
 public int countNeighbours(int row, int col){
@@ -31,20 +40,28 @@ public int countNeighbours(int row, int col){
 
             // On ignore la cellule elle-même
             if(!(dy == 0 && dx == 0)){
-                /* -----------------------------------------
-                Au lieu de bloquer les bords de la grille,
-                on fait "boucler" les coordonnées :
 
-                - si on sort à gauche → on revient à droite
-                - si on sort en haut → on revient en bas
-                - et inversement
+                int newRow = row + dy;
+                int newCol = col + dx;
 
-                Cela transforme la grille en "tore"
-                (comme une planète sans bord)
-                ----------------------------------------- */
-
-                int newRow = (row + dy + height) % height;
-                int newCol = (col + dx + width) % width;
+                if (torus) {
+                    /* -----------------------------------------
+                    Mode tore : on fait "boucler" les coordonnées.
+                    - si on sort à gauche  → on revient à droite
+                    - si on sort en haut   → on revient en bas
+                    Cela transforme la grille en "tore"
+                    (comme une planète sans bord).
+                    ----------------------------------------- */
+                    newRow = (newRow + height) % height;
+                    newCol = (newCol + width) % width;
+                } else if (newRow < 0 || newRow >= height
+                        || newCol < 0 || newCol >= width) {
+                    /* -----------------------------------------
+                    Mode borné : tout ce qui est hors de la grille
+                    est considéré comme mort. On ignore ce voisin.
+                    ----------------------------------------- */
+                    continue;
+                }
 
                 // Si la cellule voisine est vivante
                 if(grid[newRow][newCol]){

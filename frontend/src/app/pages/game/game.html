@@ -17,8 +17,12 @@
       </div>
     </div>
 
-    <!-- ⚙️ OPTIONS (dimensions) -->
+    <!-- ⚙️ OPTIONS (tore + dimensions) -->
     <div class="options">
+      <button class="toggle" [class.on]="torus" (click)="toggleTorus()">
+        🌐 Tore : {{ torus ? 'ON' : 'OFF' }}
+      </button>
+
       <button class="toggle" *ngIf="isCustomMode" [class.on]="showDimensions" (click)="toggleDimensions()"
         [disabled]="running">
         📐 Dimensions

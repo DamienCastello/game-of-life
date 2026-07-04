@@ -7,8 +7,8 @@ package gameoflife.patterns;
  *   - '.' ou ' ' = cellule morte
  *   - tout autre caractère (par convention 'O') = cellule vivante
  *
- * Le pattern connaît aussi la taille de grille qui le met en valeur
- * (ex : une "usine" a besoin d'une grande grille).
+ * Le pattern connaît aussi la taille de grille et le mode tore qui le
+ * mettent en valeur (ex : une "usine" a besoin d'une grande grille bornée).
  */
 public class Pattern {
 
@@ -16,13 +16,15 @@ public class Pattern {
     public final String label;   // libellé affiché (ex : "Gosper Gun")
     public final int rows;        // hauteur de grille recommandée
     public final int cols;        // largeur de grille recommandée
+    public final boolean torus;   // mode tore recommandé
     private final String[] art;   // le motif, ligne par ligne
 
-    public Pattern(String id, String label, int rows, int cols, String... art) {
+    public Pattern(String id, String label, int rows, int cols, boolean torus, String... art) {
         this.id = id;
         this.label = label;
         this.rows = rows;
         this.cols = cols;
+        this.torus = torus;
         this.art = art;
     }
 

@@ -19,24 +19,24 @@ public class PatternLibrary {
 
     static {
         // ---------------------------------------------------------------
-        // Basiques — petite grille 20x20
+        // Basiques — petite grille 20x20 en mode tore
         // ---------------------------------------------------------------
-        add(new Pattern("blinker", "Blinker", 20, 20,
+        add(new Pattern("blinker", "Blinker", 20, 20, true,
                 "OOO"));
 
-        add(new Pattern("glider", "Glider", 20, 20,
+        add(new Pattern("glider", "Glider", 20, 20, true,
                 ".O.",
                 "..O",
                 "OOO"));
 
-        add(new Pattern("block", "Block", 20, 20,
+        add(new Pattern("block", "Block", 20, 20, true,
                 "OO",
                 "OO"));
 
         // ---------------------------------------------------------------
         // Oscillateurs — formes qui pulsent en boucle
         // ---------------------------------------------------------------
-        add(new Pattern("pulsar", "Pulsar", 17, 17,
+        add(new Pattern("pulsar", "Pulsar", 17, 17, true,
                 "..OOO...OOO..",
                 ".............",
                 "O....O.O....O",
@@ -51,28 +51,28 @@ public class PatternLibrary {
                 ".............",
                 "..OOO...OOO.."));
 
-        add(new Pattern("pentadecathlon", "Pentadécathlon", 20, 20,
+        add(new Pattern("pentadecathlon", "Pentadécathlon", 20, 20, true,
                 "..O....O..",
                 "OO.OOOO.OO",
                 "..O....O.."));
 
         // ---------------------------------------------------------------
-        // Vaisseaux — se déplacent à travers la grille
+        // Vaisseaux — se déplacent (et bouclent sur le tore)
         // ---------------------------------------------------------------
-        add(new Pattern("lwss", "LWSS (léger)", 25, 25,
+        add(new Pattern("lwss", "LWSS (léger)", 25, 25, true,
                 ".O..O",
                 "O....",
                 "O...O",
                 "OOOO."));
 
-        add(new Pattern("mwss", "MWSS (moyen)", 25, 25,
+        add(new Pattern("mwss", "MWSS (moyen)", 25, 25, true,
                 "...O..",
                 ".O...O",
                 "O.....",
                 "O....O",
                 "OOOOO."));
 
-        add(new Pattern("hwss", "HWSS (lourd)", 25, 25,
+        add(new Pattern("hwss", "HWSS (lourd)", 25, 25, true,
                 "...OO..",
                 ".O....O",
                 "O......",
@@ -80,9 +80,9 @@ public class PatternLibrary {
                 "OOOOOO."));
 
         // ---------------------------------------------------------------
-        // Usines / Guns — grande grille pour laisser filer les gliders
+        // Usines / Guns — grande grille bornée pour laisser filer les gliders
         // ---------------------------------------------------------------
-        add(new Pattern("gosper", "Gosper Gun", 50, 50,
+        add(new Pattern("gosper", "Gosper Gun", 50, 50, false,
                 "........................O...........",
                 "......................O.O...........",
                 "............OO......OO............OO",
@@ -96,17 +96,17 @@ public class PatternLibrary {
         // ---------------------------------------------------------------
         // Méthuselahs — minuscules mais évoluent longtemps et chaotiquement
         // ---------------------------------------------------------------
-        add(new Pattern("rpentomino", "R-pentomino", 60, 60,
+        add(new Pattern("rpentomino", "R-pentomino", 60, 60, false,
                 ".OO",
                 "OO.",
                 ".O."));
 
-        add(new Pattern("acorn", "Acorn", 60, 60,
+        add(new Pattern("acorn", "Acorn", 60, 60, false,
                 ".O.....",
                 "...O...",
                 "OO..OOO"));
 
-        add(new Pattern("diehard", "Diehard", 30, 30,
+        add(new Pattern("diehard", "Diehard", 30, 30, false,
                 "......O.",
                 "OO......",
                 ".O...OOO"));
