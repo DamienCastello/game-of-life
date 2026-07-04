@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameService } from '../../services/game';
 
@@ -19,7 +19,10 @@ interface PatternGroup {
   templateUrl: './game.html',
   styleUrls: ['./game.css'],
 })
-export class GameComponent {
+export class GameComponent implements AfterViewInit {
+
+  // Référence au plateau, pour mesurer l'espace réellement disponible
+  @ViewChild('board') boardRef?: ElementRef<HTMLElement>;
 
   // Catalogue affiché, groupé par catégorie
   groups: PatternGroup[] = [
@@ -92,14 +95,43 @@ export class GameComponent {
     this.resetToCustom();
   }
 
-  // Taille de cellule (px), adaptée à la grille pour rester lisible.
-  // Champ recalculé seulement quand la grille change de taille, pour ne
-  // pas refaire le calcul à chaque cellule et à chaque génération.
+  // Taille de cellule (px). Recalculée seulement quand la grille ou
+  // l'écran change (pas à chaque cellule ni à chaque génération).
   cellSize = 22;
 
+  // Ajuste la taille des cellules pour que toute la grille tienne dans
+  // l'espace réellement disponible (mesuré sur le plateau), quel que soit
+  // le device et l'orientation (portrait / paysage).
   private updateCellSize() {
-    const n = Math.max(this.rows, this.cols);
-    this.cellSize = Math.max(6, Math.min(22, Math.floor(560 / n)));
+    const board = this.boardRef?.nativeElement;
+    // Avant que la vue soit prête, on retombe sur la taille de la fenêtre.
+    const availWidth = (board?.clientWidth ?? window.innerWidth) - 24;
+    const availHeight = (board?.clientHeight ?? window.innerHeight) - 24;
+
+    const byWidth = Math.floor(availWidth / this.cols);
+    const byHeight = Math.floor(availHeight / this.rows);
+
+    // On prend la plus petite des deux pour tenir dans les deux dimensions,
+    // borné entre 3px (grande grille sur petit écran) et 24px.
+    this.cellSize = Math.max(3, Math.min(24, Math.min(byWidth, byHeight)));
+  }
+
+  // La vue est prête : on mesure le plateau. Différé d'un tick pour ne pas
+  // modifier une valeur déjà lue dans le cycle de détection courant.
+  ngAfterViewInit() {
+    setTimeout(() => this.updateCellSize());
+  }
+
+  // Recalcule à chaque redimensionnement / rotation de l'écran.
+  @HostListener('window:resize')
+  onResize() {
+    this.updateCellSize();
+  }
+
+  @HostListener('window:orientationchange')
+  onOrientationChange() {
+    // On laisse le layout se stabiliser après la rotation avant de mesurer.
+    setTimeout(() => this.updateCellSize(), 150);
   }
 
   // Délai entre deux générations (ms), déduit de la vitesse choisie
