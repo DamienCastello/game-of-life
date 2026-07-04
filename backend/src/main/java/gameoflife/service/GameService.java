@@ -7,8 +7,6 @@ import gameoflife.patterns.Patterns;
 @Service
 public class GameService {
 
-    private GameOfLife game;
-
     public boolean[][] applyPattern(boolean[][] grid, String pattern) {
 
         switch (pattern) {
@@ -31,18 +29,20 @@ public class GameService {
 
     public boolean[][] start(String pattern, boolean[][] customGrid) {
         if ("custom".equals(pattern)) {
-            // La partie a été dessinée par le joueur
-            game = new GameOfLife(customGrid);
-        } else {
-            // La partie démarre avec un pattern prédéfini
-            game = new GameOfLife(new boolean[20][20]);
-            applyPattern(game.getGrid(), pattern);
+            // La partie a été dessinée par le joueur : on part de sa grille
+            return customGrid;
         }
 
-        return game.getGrid();
+        // La partie démarre avec un pattern prédéfini
+        boolean[][] grid = new boolean[20][20];
+        applyPattern(grid, pattern);
+        return grid;
     }
 
-    public boolean[][] next() {
+    // Calcule la génération suivante à partir de la grille reçue.
+    // Aucun état conservé côté serveur : chaque joueur envoie sa propre grille.
+    public boolean[][] next(boolean[][] grid) {
+        GameOfLife game = new GameOfLife(grid);
         game.nextGeneration();
         return game.getGrid();
     }

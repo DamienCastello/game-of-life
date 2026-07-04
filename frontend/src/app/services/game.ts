@@ -23,7 +23,7 @@ export class GameService {
     });
   }
 
-  next() {
-    return this.http.get<boolean[][]>(`${this.api}/next`);
+  next(grid: boolean[][]) {
+    return this.http.post<boolean[][]>(`${this.api}/next`, grid);
   }
 }

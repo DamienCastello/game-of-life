@@ -30,8 +30,8 @@ public class GameController {
         return service.start(request.pattern, request.grid);
     }
 
-    @GetMapping("/next")
-    public boolean[][] next() {
-        return service.next();
+    @PostMapping("/next")
+    public boolean[][] next(@RequestBody boolean[][] grid) {
+        return service.next(grid);
     }
 }

@@ -87,7 +87,7 @@ export class GameComponent {
 
       if (!this.running) return;
 
-      this.gameService.next().subscribe(res => {
+      this.gameService.next(this.grid).subscribe(res => {
         this.grid = res;
       });
 
