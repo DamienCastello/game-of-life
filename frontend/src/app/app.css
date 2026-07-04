@@ -48,3 +48,27 @@
   flex-direction: column;
   min-height: 0;
 }
+
+/* --- Responsive : header plus compact sur petit écran --- */
+@media (max-width: 640px) {
+  .app-header {
+    padding: 10px 14px;
+  }
+
+  .logo {
+    font-size: 14px;
+  }
+
+  .nav a {
+    padding: 5px 8px;
+    font-size: 14px;
+  }
+}
+
+/* En paysage sur téléphone, on réduit encore le header pour laisser
+   un maximum de hauteur au plateau de jeu. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .app-header {
+    padding: 6px 14px;
+  }
+}

@@ -273,3 +273,74 @@
 .dimensions .clear:hover {
   border-color: rgba(0, 255, 200, 0.5);
 }
+
+/* =====================================================================
+   RESPONSIVE
+   ===================================================================== */
+
+/* --- Téléphones (largeur réduite) --- */
+@media (max-width: 640px) {
+  .topbar {
+    padding: 8px 8px;
+    gap: 8px;
+  }
+
+  /* La barre de patterns devient une bande qu'on fait défiler du doigt,
+     au lieu de passer à la ligne et de manger toute la hauteur. */
+  .patterns {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    width: 100%;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Le bouton Custom et chaque catégorie gardent leur taille (pas d'écrasement). */
+  .patterns > button,
+  .group {
+    flex: 0 0 auto;
+  }
+
+  .group-buttons {
+    flex-wrap: nowrap;
+  }
+
+  .patterns button,
+  .toggle {
+    font-size: 11px;
+    padding: 5px 9px;
+  }
+
+  .footer {
+    padding: 10px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .dimensions {
+    gap: 12px;
+    padding: 6px 10px;
+  }
+}
+
+/* --- Téléphones en paysage (hauteur réduite) : on récupère de la place
+       verticale pour la grille en compressant le chrome. --- */
+@media (orientation: landscape) and (max-height: 500px) {
+  .topbar {
+    padding: 4px 8px;
+    gap: 4px;
+  }
+
+  .group-title {
+    display: none;
+  }
+
+  .footer {
+    padding: 6px 10px;
+  }
+
+  .board {
+    padding: 4px;
+  }
+}
